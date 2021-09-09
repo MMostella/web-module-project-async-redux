@@ -1,25 +1,32 @@
-import logo from './logo.svg';
+import { connect } from 'react-redux';
 import './App.css';
+import GifList from './components/GifList';
+import GifForm from './components/GifForm';
 
-function App() {
+
+function App(props) {
+  const { loading, error } = props;
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Search for Gifs</h1>
+      <GifForm />
+
+      {
+        (error !== '') && <h3>{error}</h3>
+      }
+      {
+        loading ? <h3>We are loading</h3> : <GifList/>
+      }
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    loading: state.loading,
+    error: state.error
+  }
+}
+
+export default connect(mapStateToProps)(App);
